@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id        String   @id @default(uuid())
+  name      String?
+  email     String   @unique
+  username  String   @unique
+  password  String
+  role      String   @default("user")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customers Customers[] @relation("customerUser")
+
+  @@map("users")
+}
+
+model Customers {
+  id        String   @id @default(uuid())
+  dni       String   @unique
+  name      String
+  lastname  String
+  phone     String
+  userId    String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders    Orders[] @relation("customerOrders")
+  reservations Reservations[] @relation("customerReservation")
+  reports   Reports[] @relation("customerReport")
+
+  user      Users    @relation("customerUser", fields: [userId], references: [id])
+
+  @@map("customers")
+}
+
+model Orders {
+  id        String  @id @default(uuid())
+  customerId String
+  method    String
+  totalProducts Int
+  totalAmount Float
+  placedAt  DateTime @default(now())
+  paymentStatus String
+  isActive  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer  Customers @relation("customerOrders", fields: [customerId], references: [id])
+
+  @@map("orders")
+}
+
+model Departments {
+  id        String   @id @default(uuid())
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reservations Reservations[] @relation("departmentReservation")
+  reports   Reports[] @relation("departmentReport")
+
+  @@map("departments")
+}
+
+model Categories {
+  id        String   @id @default(uuid())
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products  Products[] @relation("categoryProduct")
+
+  @@map("categories")
+}
+
+model Reports {
+  id      String  @id @default(uuid())
+  departmentId String
+  reservationId String
+  customerId String
+  name    String
+  detail  String
+  price   Float
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  department Departments @relation("departmentReport", fields: [departmentId], references: [id])
+  reservation Reservations @relation("reportsReservation", fields: [reservationId], references: [id])
+  customer  Customers @relation("customerReport", fields: [customerId], references: [id])
+  
+  @@map("reports")
+}
+
+model Reservations {
+  id        String   @id @default(uuid())
+  customerId String
+  departmentId String
+  startDate DateTime @db.Date()
+  endDate DateTime @db.Date()
+  monetaryAdvance Float
+  paymentStatus String
+  isActive  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer  Customers @relation("customerReservation", fields: [customerId], references: [id])
+  department Departments @relation("departmentReservation", fields: [departmentId], references: [id])
+
+  reports   Reports[] @relation("reportsReservation")
+
+  @@map("reservations")
+}
+
+model Products {
+  id        String   @id @default(uuid())
+  name      String
+  price     Float
+  stock     Int
+  image     String
+  categoryId String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category  Categories @relation("categoryProduct", fields: [categoryId], references: [id])
+
+  @@map("products")
+}
