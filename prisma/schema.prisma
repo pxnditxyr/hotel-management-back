@@ -34,43 +34,66 @@ model Customers {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orders    Orders[] @relation("customerOrders")
+  orders       Orders[]       @relation("customerOrders")
   reservations Reservations[] @relation("customerReservation")
-  reports   Reports[] @relation("customerReport")
+  reports      Reports[]      @relation("customerReport")
 
-  user      Users    @relation("customerUser", fields: [userId], references: [id])
+  user Users @relation("customerUser", fields: [userId], references: [id])
 
   @@map("customers")
 }
 
 model Orders {
-  id        String  @id @default(uuid())
-  customerId String
-  method    String
+  id            String   @id @default(uuid())
+  customerId    String
+  method        String
   totalProducts Int
-  totalAmount Float
-  placedAt  DateTime @default(now())
+  totalAmount   Float
+  placedAt      DateTime @default(now())
   paymentStatus String
-  isActive  Boolean @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  customer  Customers @relation("customerOrders", fields: [customerId], references: [id])
+  customer Customers       @relation("customerOrders", fields: [customerId], references: [id])
+  products ProductOrders[] @relation("orderProduct")
 
   @@map("orders")
 }
 
 model Departments {
-  id        String   @id @default(uuid())
-  name      String
+  id                   String   @id @default(uuid())
+  name                 String
+  number               Int      @unique
+  detail               String
+  floorId              String
+  departmentCategoryId String
+  imageUrl             String
+  isActive             Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  reservations       Reservations[]       @relation("departmentReservation")
+  reports            Reports[]            @relation("departmentReport")
+  floor              Floors               @relation("floorDepartment", fields: [floorId], references: [id])
+  departmentCategory DepartmentCategories @relation("departmentCategory", fields: [departmentCategoryId], references: [id])
+
+  @@map("departments")
+}
+
+model Floors {
+  id     String @id @default(uuid())
+  name   String
+  number Int    @unique
+  detail String
+
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  reservations Reservations[] @relation("departmentReservation")
-  reports   Reports[] @relation("departmentReport")
+  departments Departments[] @relation("floorDepartment")
 
-  @@map("departments")
+  @@map("floors")
 }
 
 model Categories {
@@ -80,62 +103,91 @@ model Categories {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  products  Products[] @relation("categoryProduct")
+  products Products[] @relation("categoryProduct")
 
   @@map("categories")
 }
 
 model Reports {
-  id      String  @id @default(uuid())
-  departmentId String
+  id            String   @id @default(uuid())
+  departmentId  String
   reservationId String
-  customerId String
-  name    String
-  detail  String
-  price   Float
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  customerId    String
+  name          String
+  detail        String
+  price         Float
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  department Departments @relation("departmentReport", fields: [departmentId], references: [id])
+  department  Departments  @relation("departmentReport", fields: [departmentId], references: [id])
   reservation Reservations @relation("reportsReservation", fields: [reservationId], references: [id])
-  customer  Customers @relation("customerReport", fields: [customerId], references: [id])
-  
+  customer    Customers    @relation("customerReport", fields: [customerId], references: [id])
+
   @@map("reports")
 }
 
 model Reservations {
-  id        String   @id @default(uuid())
-  customerId String
-  departmentId String
-  startDate DateTime @db.Date()
-  endDate DateTime @db.Date()
+  id              String   @id @default(uuid())
+  customerId      String
+  departmentId    String
+  startDate       DateTime @db.Date()
+  endDate         DateTime @db.Date()
   monetaryAdvance Float
-  paymentStatus String
-  isActive  Boolean @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  paymentStatus   String
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  customer  Customers @relation("customerReservation", fields: [customerId], references: [id])
+  customer   Customers   @relation("customerReservation", fields: [customerId], references: [id])
   department Departments @relation("departmentReservation", fields: [departmentId], references: [id])
 
-  reports   Reports[] @relation("reportsReservation")
+  reports Reports[] @relation("reportsReservation")
 
   @@map("reservations")
 }
 
 model Products {
+  id         String   @id @default(uuid())
+  name       String
+  price      Float
+  stock      Int
+  imageUrl   String
+  categoryId String
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category Categories      @relation("categoryProduct", fields: [categoryId], references: [id])
+  orders   ProductOrders[] @relation("productOrder")
+
+  @@map("products")
+}
+
+model DepartmentCategories {
   id        String   @id @default(uuid())
   name      String
-  price     Float
-  stock     Int
-  image     String
-  categoryId String
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  category  Categories @relation("categoryProduct", fields: [categoryId], references: [id])
+  departments Departments[] @relation("departmentCategory")
 
-  @@map("products")
+  @@map("department_categories")
+}
+
+model ProductOrders {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order   Orders   @relation("orderProduct", fields: [orderId], references: [id])
+  product Products @relation("productOrder", fields: [productId], references: [id])
+
+  @@map("products_orders")
 }
