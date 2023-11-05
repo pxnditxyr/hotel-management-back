@@ -1,0 +1,20 @@
+POST http://localhost:3002/api/auth/signin
+Content-Type: application/json
+
+{
+  "userTerm": "jhonnagay1",
+  "password": "Hola1234"
+}
+
+POST http://localhost:3002/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "JhonnaGay",
+  "email": "jhonnagay1@gmail.com",
+  "username": "jhonnagay1",
+  "password": "Hola1234"
+}
+
+GET http://localhost:3002/api/auth/revalidate-token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyM2Q0YjYyLTRiZTAtNGMyMS1hNzA0LTRiMjA3MmQyZjM1MiIsImlhdCI6MTY5OTE1MTg3OSwiZXhwIjoxNjk5MjM4Mjc5fQ.iq3FB8w5AOF6dCZkkJjcFIayI4MZdPhghMG-ae32VxQ

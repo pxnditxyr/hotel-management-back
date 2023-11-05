@@ -1,0 +1,30 @@
+
+GET http://localhost:3002/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMjc5MDI4LWExOWQtNDVhYy05MDNiLTAwODNhOWJmOTk4ZSIsImlhdCI6MTY5OTE1MjIzNywiZXhwIjoxNjk5MjM4NjM3fQ.80RVZkik4EUkIJGzWHFWb1v4fxqGwv6uCaMebTa1fjw
+
+GET http://localhost:3002/api/users/48fd2c6a-b58b-47ab-895e-ee57ba4ce99b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMjc5MDI4LWExOWQtNDVhYy05MDNiLTAwODNhOWJmOTk4ZSIsImlhdCI6MTY5OTE1MjIzNywiZXhwIjoxNjk5MjM4NjM3fQ.80RVZkik4EUkIJGzWHFWb1v4fxqGwv6uCaMebTa1fjw
+
+POST http://localhost:3002/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMjc5MDI4LWExOWQtNDVhYy05MDNiLTAwODNhOWJmOTk4ZSIsImlhdCI6MTY5OTE1MjIzNywiZXhwIjoxNjk5MjM4NjM3fQ.80RVZkik4EUkIJGzWHFWb1v4fxqGwv6uCaMebTa1fjw
+Content-Type: application/json
+
+{
+  "name": "Pxndxs xD",
+  "email": "pxndxs@pxndxs.com",
+  "username": "pxndxs",
+  "password": "Hola1234",
+  "role": "admin"
+}
+
+PATCH http://localhost:3002/api/users/3e279028-a19d-45ac-903b-0083a9bf998e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMjc5MDI4LWExOWQtNDVhYy05MDNiLTAwODNhOWJmOTk4ZSIsImlhdCI6MTY5OTE1MjIzNywiZXhwIjoxNjk5MjM4NjM3fQ.80RVZkik4EUkIJGzWHFWb1v4fxqGwv6uCaMebTa1fjw
+Content-Type: application/json
+
+{
+  "name": "Pxnditx",
+  "isActive": true
+}
+
+DELETE http://localhost:3002/api/users/3e279028-a19d-45ac-903b-0083a9bf998e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlMjc5MDI4LWExOWQtNDVhYy05MDNiLTAwODNhOWJmOTk4ZSIsImlhdCI6MTY5OTE1MjIzNywiZXhwIjoxNjk5MjM4NjM3fQ.80RVZkik4EUkIJGzWHFWb1v4fxqGwv6uCaMebTa1fjw

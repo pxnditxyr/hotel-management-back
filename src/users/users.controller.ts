@@ -2,8 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from
 import { UsersService } from './users.service'
 import { CreateUserDto, UpdateUserDto } from './dto'
 import { User } from './entities/user.entity'
+import { Auth } from 'src/auth/decorators'
+import { ValidRoles } from 'src/auth/enums'
 
 @Controller( 'users' )
+@Auth( ValidRoles.admin )
 export class UsersController {
   constructor(
     private readonly usersService: UsersService
