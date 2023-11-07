@@ -1,26 +1,100 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCustomerDto } from './dto/create-customer.dto';
-import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import { CreateCustomerDto, UpdateCustomerDto } from './dto'
+import { PrismaService } from 'src/prisma'
+import { Customer } from './entities/customer.entity'
+import { UsersService } from 'src/users/users.service'
+import { User } from 'src/users/entities/user.entity'
+
+const customerIncludes = {
+  user: true,
+  orders: true,
+  reports: true,
+  reservations: true
+}
 
 @Injectable()
 export class CustomersService {
-  create(createCustomerDto: CreateCustomerDto) {
-    return 'This action adds a new customer';
+
+  constructor (
+    @Inject( PrismaService )
+    private readonly prismaService : PrismaService,
+
+    private readonly usersService : UsersService
+  ) {}
+
+  async create ( createCustomerDto : CreateCustomerDto, creator? : User ) : Promise<Customer> {
+
+    const { userId } = createCustomerDto
+    if ( userId ) await this.usersService.findOne( userId )
+    try {
+      const customer = await this.prismaService.customers.create({
+        data: {
+          ...createCustomerDto,
+          userId: userId ? userId : creator?.id || ''
+        },
+        include: { ...customerIncludes }
+      })
+      return customer
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
 
-  findAll() {
-    return `This action returns all customers`;
+  async findAll () : Promise<Customer[]> {
+    try {
+      const customers = await this.prismaService.customers.findMany({
+        include: { ...customerIncludes }
+      })
+      return customers
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} customer`;
+  async findOne ( id : string ) : Promise<Customer> {
+    const customer = await this.prismaService.customers.findUnique({
+      where: { id },
+      include: { ...customerIncludes }
+    })
+    if ( !customer ) throw new NotFoundException( `Customer with id ${ id } not found` )
+    return customer
   }
 
-  update(id: number, updateCustomerDto: UpdateCustomerDto) {
-    return `This action updates a #${id} customer`;
+  async update ( id : string, updateCustomerDto : UpdateCustomerDto ) : Promise<Customer> {
+    await this.findOne( id )
+    const { userId } = updateCustomerDto
+    if ( userId ) await this.usersService.findOne( userId )
+    try {
+      const customer = await this.prismaService.customers.update({
+        where: { id },
+        data: { ...updateCustomerDto },
+        include: { ...customerIncludes }
+      })
+      return customer
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} customer`;
+  async deactivate ( id : string ) : Promise<Customer> {
+    await this.findOne( id )
+    try {
+      const customer = await this.prismaService.customers.update({
+        where: { id },
+        data: { isActive: false },
+        include: { ...customerIncludes }
+      })
+      return customer
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
+  }
+
+  private handlerDBExceptions ( error : any ) : never {
+    if ( error.code === 'P2002' ) {
+      throw new BadRequestException( `Customer with email ${ error.meta.target[ 0 ].email } already exists` )
+    }
+    console.log( 'entra' )
+    throw new InternalServerErrorException( 'Internal server error' )
   }
 }

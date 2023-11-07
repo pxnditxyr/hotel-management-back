@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { CreateCategoryDto } from './dto/create-category.dto'
 import { UpdateCategoryDto } from './dto/update-category.dto'
 import { PrismaService } from 'src/prisma'
@@ -70,6 +70,6 @@ export class CategoriesService {
 
   private handlerDBError ( error : any ) : never {
     console.error( error )
-    throw new Error( 'Internal Server Error' )
+    throw new InternalServerErrorException( 'Internal Server Error' )
   }
 }
