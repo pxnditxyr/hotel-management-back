@@ -1,34 +1,44 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { FloorsService } from './floors.service';
-import { CreateFloorDto } from './dto/create-floor.dto';
-import { UpdateFloorDto } from './dto/update-floor.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common'
+import { FloorsService } from './floors.service'
+import { CreateFloorDto, UpdateFloorDto } from './dto'
+import { Floor } from './entities/floor.entity'
+import { Auth } from 'src/auth/decorators'
+import { ValidRoles } from 'src/auth/enums'
 
-@Controller('floors')
+@Controller( 'floors' )
 export class FloorsController {
-  constructor(private readonly floorsService: FloorsService) {}
+  constructor (
+    private readonly floorsService: FloorsService
+  ) {}
 
   @Post()
-  create(@Body() createFloorDto: CreateFloorDto) {
-    return this.floorsService.create(createFloorDto);
+  @Auth( ValidRoles.admin )
+  async create( @Body() createFloorDto : CreateFloorDto ) : Promise<Floor> {
+    return this.floorsService.create( createFloorDto )
   }
 
   @Get()
-  findAll() {
-    return this.floorsService.findAll();
+  async findAll () : Promise<Floor[]> {
+    return this.floorsService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.floorsService.findOne(+id);
+  @Get( ':id' )
+  async findOne ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Floor> {
+    return this.floorsService.findOne( id )
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFloorDto: UpdateFloorDto) {
-    return this.floorsService.update(+id, updateFloorDto);
+  @Patch( ':id' )
+  @Auth( ValidRoles.admin )
+  async update (
+    @Param( 'id', ParseUUIDPipe ) id : string,
+    @Body() updateFloorDto: UpdateFloorDto
+  ) : Promise<Floor> {
+    return this.floorsService.update( id, updateFloorDto )
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.floorsService.remove(+id);
+  @Delete( ':id' )
+  @Auth( ValidRoles.admin )
+  async deactivate ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Floor> {
+    return this.floorsService.deactivate( id )
   }
 }

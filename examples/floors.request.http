@@ -1,0 +1,25 @@
+GET http://localhost:3002/api/floors
+
+GET http://localhost:3002/api/floors/56528e6e-af49-413d-a6ff-fbf95e0cea40
+
+POST http://localhost:3002/api/floors/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTY5OTMyODQxNCwiZXhwIjoxNjk5NDE0ODE0fQ.CuBAI2fsw699UDg2QuEvEanLixkHGeKIofA2qIYo_5k
+Content-Type: application/json
+
+{
+  "name": "Planta Baja",
+  "number": 0,
+  "detail": "Es la planta baja"
+}
+
+PATCH http://localhost:3002/api/floors/d6f17fb8-6718-4f1e-8424-f7026253cfd5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTY5OTMyODQxNCwiZXhwIjoxNjk5NDE0ODE0fQ.CuBAI2fsw699UDg2QuEvEanLixkHGeKIofA2qIYo_5k
+Content-Type: application/json
+
+{
+    "name": "Planta Baja xD",
+    "isActive": true
+}
+
+DELETE http://localhost:3002/api/floors/d6f17fb8-6718-4f1e-8424-f7026253cfd5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTY5OTMyODQxNCwiZXhwIjoxNjk5NDE0ODE0fQ.CuBAI2fsw699UDg2QuEvEanLixkHGeKIofA2qIYo_5k

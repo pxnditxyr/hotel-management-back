@@ -23,3 +23,4 @@ Content-Type: application/json
 }
 
 DELETE http://localhost:3002/api/customers/56528e6e-af49-413d-a6ff-fbf95e0cea40
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTY5OTMyODQxNCwiZXhwIjoxNjk5NDE0ODE0fQ.CuBAI2fsw699UDg2QuEvEanLixkHGeKIofA2qIYo_5k

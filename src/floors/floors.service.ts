@@ -1,26 +1,73 @@
-import { Injectable } from '@nestjs/common';
-import { CreateFloorDto } from './dto/create-floor.dto';
-import { UpdateFloorDto } from './dto/update-floor.dto';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import { CreateFloorDto, UpdateFloorDto } from './dto'
+import { PrismaService } from 'src/prisma'
+import { Floor } from './entities/floor.entity'
 
 @Injectable()
 export class FloorsService {
-  create(createFloorDto: CreateFloorDto) {
-    return 'This action adds a new floor';
+  constructor (
+    @Inject( PrismaService )
+    private readonly prismaService : PrismaService
+  ) {}
+
+  async create( createFloorDto : CreateFloorDto ) : Promise<Floor> {
+    try {
+      const floor = await this.prismaService.floors.create( {
+        data: { ...createFloorDto },
+        include: { departments: true }
+      } )
+      return floor
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
 
-  findAll() {
-    return `This action returns all floors`;
+  async findAll () : Promise<Floor[]> {
+    const floors = await this.prismaService.floors.findMany({
+      include: { departments: true }
+    })
+    return floors
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} floor`;
+  async findOne ( id : string ) : Promise<Floor> {
+    const floor = await this.prismaService.floors.findUnique({
+      where: { id },
+      include: { departments: true }
+    })
+    if ( !floor ) throw new NotFoundException( `No se encontró el piso con id ${ id }` )
+    return floor
   }
 
-  update(id: number, updateFloorDto: UpdateFloorDto) {
-    return `This action updates a #${id} floor`;
+  async update ( id : string, updateFloorDto : UpdateFloorDto ) : Promise<Floor> {
+    await this.findOne( id )
+    try {
+      const floor = await this.prismaService.floors.update({
+        where: { id },
+        data: { ...updateFloorDto },
+        include: { departments: true }
+      })
+      return floor
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} floor`;
+  async deactivate ( id : string ) : Promise<Floor> {
+    await this.findOne( id )
+    try {
+      const floor = await this.prismaService.floors.update({
+        where: { id },
+        data: { isActive: false },
+        include: { departments: true }
+      })
+      return floor
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
+  }
+
+  private handlerDBExceptions ( error : any ) : never {
+    console.error( error )
+    throw new InternalServerErrorException( 'Error inesperado, por favor revise los logs' )
   }
 }
