@@ -1,0 +1,28 @@
+GET http://localhost:3002/api/departments
+
+GET http://localhost:3002/api/departments/56528e6e-af49-413d-a6ff-fbf95e0cea40
+
+POST http://localhost:3002/api/departments/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTY5OTMyODQxNCwiZXhwIjoxNjk5NDE0ODE0fQ.CuBAI2fsw699UDg2QuEvEanLixkHGeKIofA2qIYo_5k
+Content-Type: application/json
+
+{
+  "name": "Departamento 1",
+  "number": 1,
+  "detail": "Departamento 1",
+  "floorId": "d6f17fb8-6718-4f1e-8424-f7026253cfd5",
+  "departmentCategoryId": "c54d972c-1370-471d-8bd5-74f768ec2f61",
+  "imageUrl": "https://"
+}
+
+PATCH http://localhost:3002/api/departments/d6f17fb8-6718-4f1e-8424-f7026253cfd5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTY5OTMyODQxNCwiZXhwIjoxNjk5NDE0ODE0fQ.CuBAI2fsw699UDg2QuEvEanLixkHGeKIofA2qIYo_5k
+Content-Type: application/json
+
+{
+    "name": "Planta Baja xD",
+    "isActive": true
+}
+
+DELETE http://localhost:3002/api/departments/d6f17fb8-6718-4f1e-8424-f7026253cfd5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTY5OTMyODQxNCwiZXhwIjoxNjk5NDE0ODE0fQ.CuBAI2fsw699UDg2QuEvEanLixkHGeKIofA2qIYo_5k

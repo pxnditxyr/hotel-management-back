@@ -94,7 +94,6 @@ export class CustomersService {
     if ( error.code === 'P2002' ) {
       throw new BadRequestException( `Customer with email ${ error.meta.target[ 0 ].email } already exists` )
     }
-    console.log( 'entra' )
     throw new InternalServerErrorException( 'Internal server error' )
   }
 }

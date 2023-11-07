@@ -1,26 +1,90 @@
-import { Injectable } from '@nestjs/common';
-import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import { CreateDepartmentDto, UpdateDepartmentDto } from './dto'
+import { PrismaService } from 'src/prisma'
+import { Department } from './entities/department.entity'
+import { DepartmentCategoriesService } from 'src/department-categories/department-categories.service'
+import { FloorsService } from 'src/floors/floors.service'
+
+const departmentIncludes = {
+  floor: true,
+  reports: true,
+  reservations: true,
+  departmentCategory: true
+}
 
 @Injectable()
 export class DepartmentsService {
-  create(createDepartmentDto: CreateDepartmentDto) {
-    return 'This action adds a new department';
+
+  constructor (
+    @Inject( PrismaService )
+    private readonly prismaService : PrismaService,
+
+    private readonly departmentCategoriesService : DepartmentCategoriesService,
+    private readonly floorsService : FloorsService
+  ) {}
+
+  async create ( createDepartmentDto : CreateDepartmentDto ) : Promise<Department> {
+    const { floorId, departmentCategoryId } = createDepartmentDto
+    await this.departmentCategoriesService.findOne( departmentCategoryId )
+    await this.floorsService.findOne( floorId )
+    try {
+      const department = await this.prismaService.departments.create({
+        data: { ...createDepartmentDto },
+        include: { ...departmentIncludes }
+      })
+      return department
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
 
-  findAll() {
-    return `This action returns all departments`;
+  async findAll() : Promise<Department[]> {
+    const departments = await this.prismaService.departments.findMany({
+      include: { ...departmentIncludes }
+    })
+    return departments
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} department`;
+  async findOne ( id : string ) : Promise<Department> {
+    const department = await this.prismaService.departments.findUnique({
+      where: { id },
+      include: { ...departmentIncludes }
+    })
+    if ( !department ) throw new NotFoundException( `No se encontró el departamento con id ${ id }` )
+    return department
   }
 
-  update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
-    return `This action updates a #${id} department`;
+  async update ( id : string, updateDepartmentDto : UpdateDepartmentDto ) : Promise<Department> {
+    await this.findOne( id )
+    try {
+      const department = await this.prismaService.departments.update({
+        where: { id },
+        data: { ...updateDepartmentDto },
+        include: { ...departmentIncludes }
+      })
+      return department
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} department`;
+  async deactivate ( id : string ) : Promise<Department> {
+    await this.findOne( id )
+    try {
+      const department = await this.prismaService.departments.update({
+        where: { id },
+        data: { isActive: false },
+        include: { ...departmentIncludes }
+      })
+      return department
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
+
+  private handlerDBExceptions ( error : any ) : never {
+    console.error( error )
+    throw new InternalServerErrorException( 'Error al procesar la solicitud, por favor revise los logs' )
+  }
+
 }

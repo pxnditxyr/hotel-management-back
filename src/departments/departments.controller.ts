@@ -1,34 +1,44 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DepartmentsService } from './departments.service';
-import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common'
+import { DepartmentsService } from './departments.service'
+import { CreateDepartmentDto, UpdateDepartmentDto } from './dto'
+import { Department } from './entities/department.entity'
+import { Auth } from 'src/auth/decorators'
+import { ValidRoles } from 'src/auth/enums'
 
-@Controller('departments')
+@Controller( 'departments' )
 export class DepartmentsController {
-  constructor(private readonly departmentsService: DepartmentsService) {}
+  constructor (
+    private readonly departmentsService: DepartmentsService
+  ) {}
 
   @Post()
-  create(@Body() createDepartmentDto: CreateDepartmentDto) {
-    return this.departmentsService.create(createDepartmentDto);
+  @Auth( ValidRoles.admin )
+  async create( @Body() createDepartmentDto : CreateDepartmentDto ) : Promise<Department> {
+    return this.departmentsService.create( createDepartmentDto )
   }
 
   @Get()
-  findAll() {
-    return this.departmentsService.findAll();
+  async findAll () : Promise<Department[]> {
+    return this.departmentsService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.departmentsService.findOne(+id);
+  @Get( ':id' )
+  async findOne ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Department> {
+    return this.departmentsService.findOne( id )
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDepartmentDto: UpdateDepartmentDto) {
-    return this.departmentsService.update(+id, updateDepartmentDto);
+  @Patch( ':id' )
+  @Auth( ValidRoles.admin )
+  async update (
+    @Param( 'id' ) id : string,
+    @Body() updateDepartmentDto : UpdateDepartmentDto
+  ) : Promise<Department> {
+    return this.departmentsService.update( id, updateDepartmentDto )
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.departmentsService.remove(+id);
+  @Delete( ':id' )
+  @Auth( ValidRoles.admin )
+  async deactivate ( @Param( 'id' ) id : string ) : Promise<Department> {
+    return this.departmentsService.deactivate( id )
   }
 }

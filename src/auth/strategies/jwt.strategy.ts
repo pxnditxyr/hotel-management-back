@@ -23,7 +23,6 @@ export class JwtStrategy extends PassportStrategy( Strategy ) {
   async validate ( payload : IJwtPayload ) : Promise<User> {
     const { id } = payload
     const user = await this.authService.validateUser( id )
-    console.log( user.isActive )
     if ( !user ) throw new UnauthorizedException( 'Credenciales inválidas' )
     if ( !user.isActive ) throw new UnauthorizedException( 'Esta cuenta ha sido eliminada, por favor contacte al administrador' )
     return user

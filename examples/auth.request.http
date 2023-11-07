@@ -2,7 +2,7 @@ POST http://localhost:3002/api/auth/signin
 Content-Type: application/json
 
 {
-  "userTerm": "jhonnagay",
+  "userTerm": "pxndxs@pxndxs.com",
   "password": "Hola1234"
 }
 
