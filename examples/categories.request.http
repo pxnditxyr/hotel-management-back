@@ -1,0 +1,22 @@
+GET http://localhost:3002/api/categories
+
+GET http://localhost:3002/api/categories/56528e6e-af49-413d-a6ff-fbf95e0cea40
+
+POST http://localhost:3002/api/categories/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyM2Q0YjYyLTRiZTAtNGMyMS1hNzA0LTRiMjA3MmQyZjM1MiIsImlhdCI6MTY5OTMxOTI4NiwiZXhwIjoxNjk5NDA1Njg2fQ.slG7UMTGbt126DELOVbFr0n00A-Jr3fVvsb6u0wwmyY
+Content-Type: application/json
+
+{
+    "name": "Category 1"
+}
+
+PATCH http://localhost:3002/api/categories/56528e6e-af49-413d-a6ff-fbf95e0cea40
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyM2Q0YjYyLTRiZTAtNGMyMS1hNzA0LTRiMjA3MmQyZjM1MiIsImlhdCI6MTY5OTMxOTI4NiwiZXhwIjoxNjk5NDA1Njg2fQ.slG7UMTGbt126DELOVbFr0n00A-Jr3fVvsb6u0wwmyY
+Content-Type: application/json
+
+{
+    "name": "Category 1",
+    "isActive": true
+}
+
+DELETE http://localhost:3002/api/categories/56528e6e-af49-413d-a6ff-fbf95e0cea40
