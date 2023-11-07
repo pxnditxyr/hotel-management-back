@@ -1,34 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DepartmentCategoriesService } from './department-categories.service';
-import { CreateDepartmentCategoryDto } from './dto/create-department-category.dto';
-import { UpdateDepartmentCategoryDto } from './dto/update-department-category.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common'
+import { DepartmentCategoriesService } from './department-categories.service'
+import { CreateDepartmentCategoryDto, UpdateDepartmentCategoryDto } from './dto'
+import { Auth } from 'src/auth/decorators'
+import { DepartmentCategory } from './entities/department-category.entity'
 
-@Controller('department-categories')
+@Controller( 'department-categories' )
 export class DepartmentCategoriesController {
-  constructor(private readonly departmentCategoriesService: DepartmentCategoriesService) {}
+  constructor (
+    private readonly departmentCategoriesService : DepartmentCategoriesService
+  ) {}
 
   @Post()
-  create(@Body() createDepartmentCategoryDto: CreateDepartmentCategoryDto) {
-    return this.departmentCategoriesService.create(createDepartmentCategoryDto);
+  @Auth()
+  async create(
+    @Body() createDepartmentCategoryDto : CreateDepartmentCategoryDto
+  ) : Promise<DepartmentCategory> {
+    return this.departmentCategoriesService.create( createDepartmentCategoryDto )
   }
 
   @Get()
-  findAll() {
-    return this.departmentCategoriesService.findAll();
+  async findAll() : Promise<DepartmentCategory[]> {
+    return this.departmentCategoriesService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.departmentCategoriesService.findOne(+id);
+  @Get( ':id' )
+  async findOne ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<DepartmentCategory> {
+    return this.departmentCategoriesService.findOne( id )
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDepartmentCategoryDto: UpdateDepartmentCategoryDto) {
-    return this.departmentCategoriesService.update(+id, updateDepartmentCategoryDto);
+  @Patch( ':id' )
+  async update (
+    @Param( 'id', ParseUUIDPipe ) id : string,
+    @Body() updateDepartmentCategoryDto : UpdateDepartmentCategoryDto
+  ) : Promise<DepartmentCategory> {
+    return this.departmentCategoriesService.update( id, updateDepartmentCategoryDto )
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.departmentCategoriesService.remove(+id);
+  @Delete( ':id' )
+  async deactivate ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<DepartmentCategory> {
+    return this.departmentCategoriesService.deactivate( id )
   }
 }
