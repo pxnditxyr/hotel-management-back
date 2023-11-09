@@ -1,4 +1,4 @@
-import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { CreateDepartmentDto, UpdateDepartmentDto } from './dto'
 import { PrismaService } from 'src/prisma'
 import { Department } from './entities/department.entity'
@@ -84,6 +84,9 @@ export class DepartmentsService {
 
   private handlerDBExceptions ( error : any ) : never {
     console.error( error )
+    if ( error.code === 'P2002' ) {
+      throw new BadRequestException( `Ya existe un departamento con el numero ${ error.meta.target[ 1 ] }` )
+    }
     throw new InternalServerErrorException( 'Error al procesar la solicitud, por favor revise los logs' )
   }
 
