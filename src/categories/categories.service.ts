@@ -41,7 +41,7 @@ export class CategoriesService {
   }
 
   async update ( id : string, updateCategoryDto : UpdateCategoryDto ) : Promise<Category> {
-    this.findOne( id )
+    await this.findOne( id )
     try {
       const category = await this.prismaService.categories.update({
         where: { id },
@@ -55,7 +55,7 @@ export class CategoriesService {
   }
 
   async deactivate ( id : string ) : Promise<Category> {
-    this.findOne( id )
+    await this.findOne( id )
     try {
       const category = await this.prismaService.categories.update({
         where: { id },
