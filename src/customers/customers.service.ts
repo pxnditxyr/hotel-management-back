@@ -76,12 +76,12 @@ export class CustomersService {
     }
   }
 
-  async deactivate ( id : string ) : Promise<Customer> {
-    await this.findOne( id )
+  async toggleStatus ( id : string ) : Promise<Customer> {
+    const currentCustomer = await this.findOne( id )
     try {
       const customer = await this.prismaService.customers.update({
         where: { id },
-        data: { isActive: false },
+        data: { isActive: !currentCustomer.isActive },
         include: { ...customerIncludes }
       })
       return customer

@@ -42,7 +42,7 @@ export class CustomersController {
 
   @Delete( ':id' )
   @Auth()
-  async deactivate ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Customer> {
-    return this.customersService.deactivate( id )
+  async toggleStatus ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Customer> {
+    return this.customersService.toggleStatus( id )
   }
 }

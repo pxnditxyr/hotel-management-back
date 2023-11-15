@@ -38,7 +38,7 @@ export class DepartmentsController {
 
   @Delete( ':id' )
   @Auth( ValidRoles.admin )
-  async deactivate ( @Param( 'id' ) id : string ) : Promise<Department> {
-    return this.departmentsService.deactivate( id )
+  async toggleStatus ( @Param( 'id' ) id : string ) : Promise<Department> {
+    return this.departmentsService.toggleStatus( id )
   }
 }

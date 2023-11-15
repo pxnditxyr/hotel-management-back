@@ -54,12 +54,12 @@ export class CategoriesService {
     }
   }
 
-  async deactivate ( id : string ) : Promise<Category> {
-    await this.findOne( id )
+  async toggleStatus ( id : string ) : Promise<Category> {
+    const currentCategory = await this.findOne( id )
     try {
       const category = await this.prismaService.categories.update({
         where: { id },
-        data: { isActive: false },
+        data: { isActive: !currentCategory.isActive },
         include: { products: true }
       })
       return category

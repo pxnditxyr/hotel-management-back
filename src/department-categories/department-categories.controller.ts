@@ -37,7 +37,7 @@ export class DepartmentCategoriesController {
   }
 
   @Delete( ':id' )
-  async deactivate ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<DepartmentCategory> {
-    return this.departmentCategoriesService.deactivate( id )
+  async toggleStatus ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<DepartmentCategory> {
+    return this.departmentCategoriesService.toggleStatus( id )
   }
 }

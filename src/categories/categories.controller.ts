@@ -35,7 +35,7 @@ export class CategoriesController {
 
   @Delete( ':id' )
   @Auth( ValidRoles.admin )
-  async remove ( @Param( 'id', ParseUUIDPipe ) id : string ) {
-    return this.categoriesService.deactivate( id )
+  async toggleStatus ( @Param( 'id', ParseUUIDPipe ) id : string ) {
+    return this.categoriesService.toggleStatus( id )
   }
 }

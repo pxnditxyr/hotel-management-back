@@ -38,7 +38,7 @@ export class FloorsController {
 
   @Delete( ':id' )
   @Auth( ValidRoles.admin )
-  async deactivate ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Floor> {
-    return this.floorsService.deactivate( id )
+  async toggleStatus ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Floor> {
+    return this.floorsService.toggleStatus( id )
   }
 }

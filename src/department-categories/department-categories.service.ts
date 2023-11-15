@@ -53,12 +53,12 @@ export class DepartmentCategoriesService {
     }
   }
 
-  async deactivate ( id : string ) : Promise<DepartmentCategory> {
-    await this.findOne( id )
+  async toggleStatus ( id : string ) : Promise<DepartmentCategory> {
+    const currentDepartmentCategory = await this.findOne( id )
     try {
       const departmentCategory = await this.prismaService.departmentCategories.update({
         where: { id },
-        data: { isActive: false },
+        data: { isActive: !currentDepartmentCategory.isActive },
         include: { departments: true }
       })
       return departmentCategory

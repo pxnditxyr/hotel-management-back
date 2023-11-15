@@ -52,12 +52,12 @@ export class FloorsService {
     }
   }
 
-  async deactivate ( id : string ) : Promise<Floor> {
-    await this.findOne( id )
+  async toggleStatus ( id : string ) : Promise<Floor> {
+    const currentFloor = await this.findOne( id )
     try {
       const floor = await this.prismaService.floors.update({
         where: { id },
-        data: { isActive: false },
+        data: { isActive: !currentFloor.isActive },
         include: { departments: true }
       })
       return floor

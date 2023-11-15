@@ -1,0 +1,26 @@
+GET http://localhost:3002/api/orders
+
+GET http://localhost:3002/api/orders/56528e6e-af49-413d-a6ff-fbf95e0cea40
+
+POST http://localhost:3002/api/orders/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA3NjM5MywiZXhwIjoxNzAwMTYyNzkzfQ.gSfReL7JdrJAi48BNgb8lGJDfmZg8JsUivo6mhqq4ps
+Content-Type: application/json
+
+{
+  "customerId": "8ab7062c-054c-47e0-b5d5-671c1174238a",
+  "method": "delivery",
+  "totalProducts": 2,
+  "totalAmount": 100,
+  "paymentStatus": "pending"
+}
+
+PATCH http://localhost:3002/api/orders/b6586def-85e0-4273-8363-75c61fb93fab
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA3NjM5MywiZXhwIjoxNzAwMTYyNzkzfQ.gSfReL7JdrJAi48BNgb8lGJDfmZg8JsUivo6mhqq4ps
+Content-Type: application/json
+
+{
+    "method": "pickup"
+}
+
+DELETE http://localhost:3002/api/orders/b6586def-85e0-4273-8363-75c61fb93fab
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA3NjM5MywiZXhwIjoxNzAwMTYyNzkzfQ.gSfReL7JdrJAi48BNgb8lGJDfmZg8JsUivo6mhqq4ps
