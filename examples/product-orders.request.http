@@ -1,0 +1,25 @@
+GET http://localhost:3002/api/product-orders
+
+GET http://localhost:3002/api/product-orders/56528e6e-af49-413d-a6ff-fbf95e0cea40
+
+POST http://localhost:3002/api/product-orders/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU
+Content-Type: application/json
+
+{
+  "quantity": 1,
+  "price": 100,
+  "orderId": "dc3c6299-0194-461e-9901-3018130d9652",
+  "productId": "aba3818a-4199-407b-8f1f-73af93e55979"
+}
+
+PATCH http://localhost:3002/api/product-orders/f1694cd2-ba61-4b9f-8478-45821451f76b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU
+Content-Type: application/json
+
+{
+    "quantity": 2
+}
+
+DELETE http://localhost:3002/api/product-orders/f1694cd2-ba61-4b9f-8478-45821451f76b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU

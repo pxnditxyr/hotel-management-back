@@ -1,34 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ProductOrdersService } from './product-orders.service';
-import { CreateProductOrderDto } from './dto/create-product-order.dto';
-import { UpdateProductOrderDto } from './dto/update-product-order.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common'
+import { ProductOrdersService } from './product-orders.service'
+import { CreateProductOrderDto, UpdateProductOrderDto } from './dto'
+import { Auth } from 'src/auth/decorators'
+import { ValidRoles } from 'src/auth/enums'
+import { ProductOrder } from './entities/product-order.entity'
 
-@Controller('product-orders')
+@Controller( 'product-orders' )
 export class ProductOrdersController {
-  constructor(private readonly productOrdersService: ProductOrdersService) {}
+
+  constructor (
+    private readonly productOrdersService: ProductOrdersService
+  ) {}
 
   @Post()
-  create(@Body() createProductOrderDto: CreateProductOrderDto) {
-    return this.productOrdersService.create(createProductOrderDto);
+  @Auth( ValidRoles.admin )
+  async create( @Body() createProductOrderDto : CreateProductOrderDto ) : Promise<ProductOrder> {
+    return this.productOrdersService.create( createProductOrderDto )
   }
 
   @Get()
-  findAll() {
-    return this.productOrdersService.findAll();
+  async findAll () : Promise<ProductOrder[]> {
+    return this.productOrdersService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productOrdersService.findOne(+id);
+  @Get( ':id' )
+  async findOne ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<ProductOrder> {
+    return this.productOrdersService.findOne( id )
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductOrderDto: UpdateProductOrderDto) {
-    return this.productOrdersService.update(+id, updateProductOrderDto);
+  @Patch( ':id' )
+  async update (
+    @Param( 'id', ParseUUIDPipe ) id : string,
+    @Body() updateProductOrderDto : UpdateProductOrderDto
+  ) : Promise<ProductOrder> {
+    return this.productOrdersService.update( id, updateProductOrderDto )
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productOrdersService.remove(+id);
+  @Delete( ':id' )
+  async toggleStatus ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<ProductOrder> {
+    return this.productOrdersService.toggleStatus( id )
   }
 }

@@ -1,0 +1,26 @@
+GET http://localhost:3002/api/products
+
+GET http://localhost:3002/api/products/56528e6e-af49-413d-a6ff-fbf95e0cea40
+
+POST http://localhost:3002/api/products/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU
+Content-Type: application/json
+
+{
+    "name": "Product 1",
+    "price": 100,
+    "stock": 10,
+    "imageUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+    "categoryId": "bcda2a63-0588-4914-bbce-08d1e0f068cf"
+}
+
+PATCH http://localhost:3002/api/products/aba3818a-4199-407b-8f1f-73af93e55979
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU
+Content-Type: application/json
+
+{
+    "name": "Product 2"
+}
+
+DELETE http://localhost:3002/api/products/aba3818a-4199-407b-8f1f-73af93e55979
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU

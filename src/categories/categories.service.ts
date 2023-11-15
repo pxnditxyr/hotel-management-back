@@ -36,7 +36,7 @@ export class CategoriesService {
       where: { id },
       include: { products: true }
     })
-    if ( !category ) throw new NotFoundException( `Category with id ${ id } not found` )
+    if ( !category ) throw new NotFoundException( `La categoria con el id ${ id } no existe` )
     return category
   }
 
@@ -70,6 +70,6 @@ export class CategoriesService {
 
   private handlerDBError ( error : any ) : never {
     console.error( error )
-    throw new InternalServerErrorException( 'Internal Server Error' )
+    throw new InternalServerErrorException( 'Error en el servidor, por favor revise los logs' )
   }
 }

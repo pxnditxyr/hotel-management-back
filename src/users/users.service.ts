@@ -42,7 +42,7 @@ export class UsersService {
       where: { id },
       include: { customers: true }
     })
-    if ( !user ) throw new NotFoundException( `User with id ${ id } not found` )
+    if ( !user ) throw new NotFoundException( `El usuario con el id ${ id } no existe` )
     return user
   }
 
@@ -57,7 +57,7 @@ export class UsersService {
       where: { username: userTerm },
       include: { customers: true }
     })
-    if ( !userWithUsername ) throw new NotFoundException( `User with email or username ${ userTerm } not found` )
+    if ( !userWithUsername ) throw new NotFoundException( `El usuario con el email o username ${ userTerm } no existe` )
     return userWithUsername
   }
       
@@ -100,6 +100,6 @@ export class UsersService {
       throw new BadRequestException( `El campo ${ field } ya existe` )
     }
     console.error( error )
-    throw new InternalServerErrorException( 'Error al procesar la solicitud' )
+    throw new InternalServerErrorException( 'Ups! Algo salió mal, por favor revisa los logs' )
   }
 }

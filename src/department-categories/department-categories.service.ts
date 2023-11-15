@@ -35,7 +35,7 @@ export class DepartmentCategoriesService {
       where: { id },
       include: { departments: true }
     })
-    if ( !departmentCategory ) throw new NotFoundException( `Department Category with ID ${ id } not found` )
+    if ( !departmentCategory ) throw new NotFoundException( `La "categoria de departamento" con el id ${ id } no existe` )
     return departmentCategory
   }
 

@@ -56,7 +56,7 @@ export class CustomersService {
       where: { id },
       include: { ...customerIncludes }
     })
-    if ( !customer ) throw new NotFoundException( `Customer with id ${ id } not found` )
+    if ( !customer ) throw new NotFoundException( `Cliente con el id ${ id } no existe` )
     return customer
   }
 
@@ -92,8 +92,8 @@ export class CustomersService {
 
   private handlerDBExceptions ( error : any ) : never {
     if ( error.code === 'P2002' ) {
-      throw new BadRequestException( `Customer with email ${ error.meta.target[ 0 ].email } already exists` )
+      throw new BadRequestException( `Ya existe un cliente con el mismo correo electrónico` )
     }
-    throw new InternalServerErrorException( 'Internal server error' )
+    throw new InternalServerErrorException( 'Ups! Algo ha salido mal, por favor revise los logs' )
   }
 }
