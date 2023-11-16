@@ -1,34 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ReservationsService } from './reservations.service';
-import { CreateReservationDto } from './dto/create-reservation.dto';
-import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common'
+import { ReservationsService } from './reservations.service'
+import { CreateReservationDto, UpdateReservationDto } from './dto'
+import { Reservation } from './entities/reservation.entity'
+import { Auth } from 'src/auth/decorators'
+import { ValidRoles } from 'src/auth/enums'
 
-@Controller('reservations')
+@Controller( 'reservations' )
 export class ReservationsController {
-  constructor(private readonly reservationsService: ReservationsService) {}
+  constructor (
+    private readonly reservationsService: ReservationsService
+  ) {}
 
   @Post()
-  create(@Body() createReservationDto: CreateReservationDto) {
-    return this.reservationsService.create(createReservationDto);
+  @Auth( ValidRoles.admin, ValidRoles.user )
+  async create( @Body() createReservationDto : CreateReservationDto ) : Promise<Reservation> {
+    return this.reservationsService.create( createReservationDto )
   }
 
   @Get()
-  findAll() {
-    return this.reservationsService.findAll();
+  async findAll () : Promise<Reservation[]> {
+    return this.reservationsService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reservationsService.findOne(+id);
+  @Get( ':id' )
+  async findOne ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Reservation> {
+    return this.reservationsService.findOne( id )
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto) {
-    return this.reservationsService.update(+id, updateReservationDto);
+  @Patch( ':id' )
+  async update (
+    @Param( 'id', ParseUUIDPipe ) id : string,
+    @Body() updateReservationDto: UpdateReservationDto
+  ) : Promise<Reservation> {
+    return this.reservationsService.update( id, updateReservationDto )
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reservationsService.remove(+id);
+  @Delete( ':id' )
+  async toggleStatus ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Reservation> {
+    return this.reservationsService.toggleStatus( id )
   }
 }

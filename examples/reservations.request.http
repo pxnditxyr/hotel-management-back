@@ -1,0 +1,27 @@
+GET http://localhost:3002/api/reservations
+
+GET http://localhost:3002/api/reservations/2662ed01-294e-4cfa-99d9-1a40a89eb2f6
+
+POST http://localhost:3002/api/reservations/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU
+Content-Type: application/json
+
+{
+    "customerId": "8ab7062c-054c-47e0-b5d5-671c1174238a",
+    "departmentId": "637aeb6d-e8fe-479d-a162-8572d122c1a5",
+    "startDate": "2019-01-01",
+    "endDate": "2019-01-02",
+    "monetaryAdvance": 0,
+    "paymentStatus": "pending"
+}
+
+PATCH http://localhost:3002/api/reservations/c9c89164-7740-478e-8052-7b794c9be237
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU
+Content-Type: application/json
+
+{
+    "paymentStatus": "paid"
+}
+
+DELETE http://localhost:3002/api/reservations/2662ed01-294e-4cfa-99d9-1a40a89eb2f6
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU

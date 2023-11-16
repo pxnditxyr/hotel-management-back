@@ -1,34 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ReportsService } from './reports.service';
-import { CreateReportDto } from './dto/create-report.dto';
-import { UpdateReportDto } from './dto/update-report.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common'
+import { ReportsService } from './reports.service'
+import { CreateReportDto, UpdateReportDto } from './dto'
+import { Auth } from 'src/auth/decorators'
+import { ValidRoles } from 'src/auth/enums'
+import { Report } from './entities/report.entity'
 
-@Controller('reports')
+@Controller( 'reports' )
 export class ReportsController {
-  constructor(private readonly reportsService: ReportsService) {}
+  constructor (
+    private readonly reportsService : ReportsService
+  ) {}
 
   @Post()
-  create(@Body() createReportDto: CreateReportDto) {
-    return this.reportsService.create(createReportDto);
+  @Auth( ValidRoles.admin )
+  async create ( @Body() createReportDto : CreateReportDto ) : Promise<Report> {
+    return this.reportsService.create( createReportDto )
   }
 
   @Get()
-  findAll() {
-    return this.reportsService.findAll();
+  async findAll() : Promise<Report[]> {
+    return this.reportsService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reportsService.findOne(+id);
+  @Get( ':id' )
+  async findOne ( @Param( 'id', ParseUUIDPipe ) id : string ) : Promise<Report> {
+    return this.reportsService.findOne( id )
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReportDto: UpdateReportDto) {
-    return this.reportsService.update(+id, updateReportDto);
+  @Auth( ValidRoles.admin )
+  async update (
+    @Param( 'id', ParseUUIDPipe ) id : string,
+    @Body() updateReportDto : UpdateReportDto
+  ) : Promise<Report> {
+    return this.reportsService.update( id, updateReportDto )
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reportsService.remove(+id);
+  @Delete( ':id' )
+  async toggleStatus( @Param( 'id' ) id : string ) : Promise<Report> {
+    return this.reportsService.toggleStatus( id )
   }
 }

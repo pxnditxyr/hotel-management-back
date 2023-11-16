@@ -1,0 +1,28 @@
+GET http://localhost:3002/api/reports
+
+GET http://localhost:3002/api/reports/56528e6e-af49-413d-a6ff-fbf95e0cea40
+
+POST http://localhost:3002/api/reports/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU
+Content-Type: application/json
+
+{
+    "name": "Report 1",
+    "departmentId": "637aeb6d-e8fe-479d-a162-8572d122c1a5",
+    "reservationId": "c1970027-29ee-4ebc-94c9-e21de240ff16",
+    "customerId": "8ab7062c-054c-47e0-b5d5-671c1174238a",
+    "detail": "Report 1 detail",
+    "price": 100
+}
+
+PATCH http://localhost:3002/api/reports/8b83d20d-cdb9-47ab-8715-db44ed486c89
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU
+Content-Type: application/json
+
+{
+    "name": "Report 2",
+    "detail": "Report 2 detail"
+}
+
+DELETE http://localhost:3002/api/reports/8b83d20d-cdb9-47ab-8715-db44ed486c89
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ4ZmQyYzZhLWI1OGItNDdhYi04OTVlLWVlNTdiYTRjZTk5YiIsImlhdCI6MTcwMDA4NTIwOCwiZXhwIjoxNzAwMTcxNjA4fQ.cs1uOmtRHTGa4dVMmo2mLQbhdkKlBMSygZF8kKrVUjU

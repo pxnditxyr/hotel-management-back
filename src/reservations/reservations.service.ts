@@ -1,26 +1,111 @@
-import { Injectable } from '@nestjs/common';
-import { CreateReservationDto } from './dto/create-reservation.dto';
-import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import { CreateReservationDto, UpdateReservationDto } from './dto'
+import { PrismaService } from 'src/prisma'
+import { CustomersService } from 'src/customers/customers.service'
+import { DepartmentsService } from 'src/departments/departments.service'
+import { Reservation } from './entities/reservation.entity'
 
 @Injectable()
 export class ReservationsService {
-  create(createReservationDto: CreateReservationDto) {
-    return 'This action adds a new reservation';
+
+  constructor (
+    @Inject( PrismaService )
+    private readonly prismaService : PrismaService,
+
+    private readonly customersService : CustomersService,
+    private readonly departmentsService : DepartmentsService
+  ) {}
+
+  async create( createReservationDto : CreateReservationDto ) : Promise<Reservation> {
+    const { customerId, departmentId } = createReservationDto
+    await this.customersService.findOne( customerId )
+    await this.departmentsService.findOne( departmentId )
+    try {
+      const reservation = await this.prismaService.reservations.create({
+        data: {
+          ...createReservationDto,
+          startDate: new Date( createReservationDto.startDate ),
+          endDate: new Date( createReservationDto.endDate )
+        },
+        include: {
+          reports: true,
+          customer: true,
+          department: true
+        }
+      })
+      return reservation
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
 
-  findAll() {
-    return `This action returns all reservations`;
+  async findAll () : Promise<Reservation[]> {
+    const reservations = await this.prismaService.reservations.findMany({
+      include: {
+        reports: true,
+        customer: true,
+        department: true
+      }
+    } )
+    return reservations
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reservation`;
+  async findOne ( id : string ) : Promise<Reservation> {
+    const reservation = await this.prismaService.reservations.findUnique({
+      where: { id },
+      include: {
+        reports: true,
+        customer: true,
+        department: true
+      }
+    })
+    if ( !reservation ) throw new NotFoundException( `No se encontró la reservación con id: ${ id }` )
+    return reservation
   }
 
-  update(id: number, updateReservationDto: UpdateReservationDto) {
-    return `This action updates a #${id} reservation`;
+  async update ( id : string, updateReservationDto : UpdateReservationDto ) : Promise<Reservation> {
+    await this.findOne( id )
+    const { customerId, departmentId } = updateReservationDto
+    if ( customerId ) await this.customersService.findOne( customerId )
+    if ( departmentId ) await this.departmentsService.findOne( departmentId )
+    const { startDate, endDate } = updateReservationDto
+    if ( startDate ) updateReservationDto.startDate = new Date( startDate )
+    if ( endDate ) updateReservationDto.endDate = new Date( endDate )
+    try {
+      const reservation = await this.prismaService.reservations.update({
+        where: { id },
+        data: { ...updateReservationDto },
+        include: {
+          reports: true,
+          customer: true,
+          department: true
+        }
+      })
+      return reservation
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reservation`;
+  async toggleStatus ( id : string ) : Promise<Reservation> {
+    const currentReservation = await this.findOne( id )
+    try {
+      const reservation = await this.prismaService.reservations.update({
+        where: { id },
+        data: { isActive: !currentReservation.isActive },
+        include: {
+          reports: true,
+          customer: true,
+          department: true
+        }
+      })
+      return reservation
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
+  }
+  private handlerDBExceptions ( error : any ) : never {
+    console.error( error )
+    throw new InternalServerErrorException( 'Ups! Algo salió mal, por favor revise los logs' )
   }
 }
