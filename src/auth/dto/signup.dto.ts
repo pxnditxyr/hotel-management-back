@@ -1,11 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsNumberString, IsString, Matches } from 'class-validator'
 
 export class SignupDto {
   @IsNotEmpty()
-  @IsString()
+  @IsString( { message: 'El nombre debe ser un string' } )
   name: string
 
-  @IsEmail()
+  @IsEmail( {}, { message: 'El email debe ser un email válido' } )
   email: string
 
   @IsNotEmpty()
@@ -15,4 +15,16 @@ export class SignupDto {
   @IsString()
   @Matches( /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, { message: 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número' } )
   password: string
+
+  @IsNotEmpty()
+  @IsNumberString( { no_symbols: true }, { message: 'El dni debe ser un número' } )
+  dni: string
+
+  @IsNotEmpty()
+  @IsString( { message: 'El apellido debe ser un string' } )
+  lastname: string
+
+  @IsNotEmpty()
+  @IsNumberString( { no_symbols: true }, { message: 'El teléfono debe ser un número' } )
+  phone: string
 }

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Module, forwardRef } from '@nestjs/common'
 import { CustomersService } from './customers.service'
 import { CustomersController } from './customers.controller'
 import { PrismaService } from 'src/prisma'
@@ -11,7 +11,10 @@ import { AuthModule } from 'src/auth/auth.module'
     CustomersService,
     PrismaService
   ],
-  imports: [ AuthModule, UsersModule ],
+  imports: [
+    forwardRef( () => AuthModule ),
+    forwardRef( () => UsersModule )
+  ],
   exports: [ CustomersService ]
 })
 export class CustomersModule {}

@@ -60,6 +60,15 @@ export class CustomersService {
     return customer
   }
 
+async findOneByDni ( dni : string ) : Promise<Customer> {
+    const customer = await this.prismaService.customers.findUnique({
+      where: { dni },
+      include: { ...customerIncludes }
+    })
+    if ( !customer ) throw new NotFoundException( `Cliente con el dni ${ dni } no existe` )
+    return customer
+  }
+
   async update ( id : string, updateCustomerDto : UpdateCustomerDto ) : Promise<Customer> {
     await this.findOne( id )
     const { userId } = updateCustomerDto
@@ -92,7 +101,7 @@ export class CustomersService {
 
   private handlerDBExceptions ( error : any ) : never {
     if ( error.code === 'P2002' ) {
-      throw new BadRequestException( `Ya existe un cliente con el mismo correo electrónico` )
+      throw new BadRequestException( `Ya existe un cliente con el mismo C.I.` )
     }
     throw new InternalServerErrorException( 'Ups! Algo ha salido mal, por favor revise los logs' )
   }

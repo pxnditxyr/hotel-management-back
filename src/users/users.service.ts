@@ -15,11 +15,14 @@ export class UsersService {
 
   async create ( createUserDto : CreateUserDto ) : Promise<User> {
     try {
-      const { password } = createUserDto
+      const { password, role, email, name, username } = createUserDto
       const hashedPassword = hashSync( password, 10 )
       const user = await this.prismaService.users.create({
         data: {
-          ...createUserDto,
+          role,
+          email,
+          name,
+          username,
           password: hashedPassword
         },
         include: { customers: true }
@@ -86,6 +89,19 @@ export class UsersService {
       const user = await this.prismaService.users.update({
         where: { id },
         data: { isActive: false },
+        include: { customers: true }
+      })
+      return user
+    } catch ( error ) {
+      this.handlerDBExceptions( error )
+    }
+  }
+
+  async delete ( id : string ) : Promise<User> {
+    await this.findOne( id )
+    try {
+      const user = await this.prismaService.users.delete({
+        where: { id },
         include: { customers: true }
       })
       return user
