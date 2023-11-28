@@ -22,7 +22,9 @@ export class AuthService {
     const user = await this.usersService.findOneByUserTerm( userTerm )
     if ( !user.isActive ) throw new UnauthorizedException( 'Esta cuenta ha sido eliminada, por favor contacte al administrador' )
     
+    // Bcrypt
     const { password: hashedPassword } = user
+
     if ( !compareSync( password, hashedPassword ) ) throw new UnauthorizedException( 'Credenciales inválidas' )
     return  {
       user: {

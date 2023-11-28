@@ -19,6 +19,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^10.2.8",
+    "@nestjs/throttler": "^5.0.1",
     "@prisma/client": "^5.5.2",
     "@types/passport-jwt": "^3.0.12",
     "bcrypt": "^5.1.1",

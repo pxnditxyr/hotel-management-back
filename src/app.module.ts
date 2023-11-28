@@ -12,6 +12,7 @@ import { ReservationsModule } from './reservations/reservations.module'
 import { ProductsModule } from './products/products.module'
 import { DepartmentCategoriesModule } from './department-categories/department-categories.module'
 import { ProductOrdersModule } from './product-orders/product-orders.module'
+import { ThrottlerModule } from '@nestjs/throttler'
 
 @Module({
   imports: [
@@ -28,6 +29,11 @@ import { ProductOrdersModule } from './product-orders/product-orders.module'
     ProductsModule,
     DepartmentCategoriesModule,
     ProductOrdersModule,
-  ]
+    // Rate Limit
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 10,
+    }]),
+  ],
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmpty, IsNumberString, IsString, Matches } from 'class-validator'
 
 export class SignupDto {
+  // Class validator
   @IsNotEmpty()
   @IsString( { message: 'El nombre debe ser un string' } )
   name: string
