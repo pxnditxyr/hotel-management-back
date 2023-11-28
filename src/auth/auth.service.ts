@@ -30,9 +30,9 @@ export class AuthService {
       user: {
         id: user.id,
         role: user.role,
-        email: user.email,
+        email: user.email.toLowerCase(),
         name: user.name,
-        username: user.username
+        username: user.username.toLowerCase()
       },
       token: this.generateToken( user.id )
     }
@@ -71,9 +71,9 @@ export class AuthService {
       user: {
         id: user.id,
         role: user.role,
-        email: user.email,
+        email: user.email.toLowerCase(),
         name: user.name,
-        username: user.username
+        username: user.username.toLowerCase()
       },
       token: this.generateToken( user.id )
     }
