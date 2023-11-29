@@ -13,6 +13,7 @@ import { ProductsModule } from './products/products.module'
 import { DepartmentCategoriesModule } from './department-categories/department-categories.module'
 import { ProductOrdersModule } from './product-orders/product-orders.module'
 import { ThrottlerModule } from '@nestjs/throttler'
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ThrottlerModule } from '@nestjs/throttler'
       ttl: 60000,
       limit: 10,
     }]),
+    ContactModule,
   ],
 })
 export class AppModule {}
