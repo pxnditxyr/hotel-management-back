@@ -56,11 +56,20 @@ export class CustomersService {
       where: { id },
       include: { ...customerIncludes }
     })
-    if ( !customer ) throw new NotFoundException( `Cliente con el id ${ id } no existe` )
+    if ( !customer ) throw new NotFoundException( `No se encontró el cliente` )
     return customer
   }
 
-async findOneByDni ( dni : string ) : Promise<Customer> {
+  async findOneByUserId ( userId : string ) : Promise<Customer> {
+    const customer = await this.prismaService.customers.findFirst({
+      where: { userId },
+      include: { ...customerIncludes }
+    })
+    if ( !customer ) throw new NotFoundException( `No se encontró el cliente` )
+    return customer
+  }
+
+  async findOneByDni ( dni : string ) : Promise<Customer> {
     const customer = await this.prismaService.customers.findUnique({
       where: { dni },
       include: { ...customerIncludes }

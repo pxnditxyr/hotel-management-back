@@ -13,6 +13,10 @@ export class CreateDepartmentDto {
   @IsString()
   detail: string
 
+  @Min( 1 )
+  @IsNumber()
+  price: number
+
   @IsUUID()
   floorId: string
 

@@ -16,6 +16,8 @@ export class Department {
 
   departmentCategoryId: string
 
+  price: number
+
   imageUrl: string
 
   isActive: boolean

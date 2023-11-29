@@ -4,6 +4,8 @@ import { PrismaService } from 'src/prisma'
 import { CustomersService } from 'src/customers/customers.service'
 import { DepartmentsService } from 'src/departments/departments.service'
 import { Reservation } from './entities/reservation.entity'
+import { UsersService } from 'src/users/users.service'
+import { Customer } from 'src/customers/entities/customer.entity'
 
 @Injectable()
 export class ReservationsService {
@@ -12,20 +14,28 @@ export class ReservationsService {
     @Inject( PrismaService )
     private readonly prismaService : PrismaService,
 
+    private readonly usersService : UsersService,
     private readonly customersService : CustomersService,
     private readonly departmentsService : DepartmentsService
   ) {}
 
   async create( createReservationDto : CreateReservationDto ) : Promise<Reservation> {
     const { customerId, departmentId } = createReservationDto
-    await this.customersService.findOne( customerId )
+    let customer : Customer | undefined | null
+    try {
+      await this.usersService.findOne( customerId )
+      customer = await this.customersService.findOneByUserId( customerId )
+    } catch ( error ) {
+      customer = await this.customersService.findOne( customerId )
+    }
     await this.departmentsService.findOne( departmentId )
     try {
       const reservation = await this.prismaService.reservations.create({
         data: {
           ...createReservationDto,
           startDate: new Date( createReservationDto.startDate ),
-          endDate: new Date( createReservationDto.endDate )
+          endDate: new Date( createReservationDto.endDate ),
+          customerId: customer.id
         },
         include: {
           reports: true,

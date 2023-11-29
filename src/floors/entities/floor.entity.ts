@@ -9,6 +9,8 @@ export class Floor {
 
   detail: string
 
+  imageUrl: string
+
   isActive: boolean
 
   createdAt: Date

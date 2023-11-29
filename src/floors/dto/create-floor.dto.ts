@@ -12,4 +12,8 @@ export class CreateFloorDto {
   @IsNotEmpty()
   @IsString()
   detail: string
+
+  @IsNotEmpty()
+  @IsString()
+  imageUrl: string
 }

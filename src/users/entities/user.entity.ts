@@ -10,6 +10,8 @@ export class User {
   username: string
 
   password: string
+  
+  imageUrl?: string | null
 
   role: string
 

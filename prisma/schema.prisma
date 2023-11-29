@@ -13,6 +13,7 @@ model Users {
   email     String   @unique
   username  String   @unique
   password  String
+  imageUrl  String?
   role      String   @default("user")
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -67,6 +68,7 @@ model Departments {
   number               Int      @unique
   detail               String
   floorId              String
+  price                Float
   departmentCategoryId String
   imageUrl             String
   isActive             Boolean  @default(true)
@@ -85,6 +87,7 @@ model Floors {
   id     String @id @default(uuid())
   name   String
   number Int    @unique
+  imageUrl String
   detail String
 
   isActive  Boolean  @default(true)

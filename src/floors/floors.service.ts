@@ -34,7 +34,7 @@ export class FloorsService {
       where: { id },
       include: { departments: true }
     })
-    if ( !floor ) throw new NotFoundException( `No se encontró el piso con id ${ id }` )
+    if ( !floor ) throw new NotFoundException( `No se encontró el piso` )
     return floor
   }
 

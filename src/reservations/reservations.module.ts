@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma'
 import { CustomersModule } from 'src/customers/customers.module'
 import { AuthModule } from 'src/auth/auth.module'
 import { DepartmentsModule } from 'src/departments/departments.module'
+import { UsersModule } from 'src/users/users.module'
 
 @Module({
   controllers: [ ReservationsController ],
@@ -15,6 +16,7 @@ import { DepartmentsModule } from 'src/departments/departments.module'
   imports: [
     AuthModule,
     CustomersModule,
+    UsersModule,
     DepartmentsModule
   ],
   exports: [ ReservationsService ]

@@ -45,7 +45,7 @@ export class UsersService {
       where: { id },
       include: { customers: true }
     })
-    if ( !user ) throw new NotFoundException( `El usuario con el id ${ id } no existe` )
+    if ( !user ) throw new NotFoundException( `El usuario no existe` )
     return user
   }
 
