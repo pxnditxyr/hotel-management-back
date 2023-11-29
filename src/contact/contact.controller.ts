@@ -3,9 +3,9 @@ import { ContactService } from './contact.service'
 import { CreateContactDto } from './dto'
 import { Contact } from './entities/contact.entity'
 
-@Controller('contact')
+@Controller( 'contact' )
 export class ContactController {
-  constructor(private readonly contactService: ContactService) {}
+  constructor( private readonly contactService: ContactService ) {}
 
   @Post()
   async create( @Body() createContactDto : CreateContactDto ) : Promise<Contact> {
